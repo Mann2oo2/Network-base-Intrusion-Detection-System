@@ -1,0 +1,41 @@
+{
+    "rules": [
+        {
+            "type": "ICMP",
+            "description": "Large ICMP packet",
+            "condition": "features.get('raw', 0) > 5000",
+            "alert_message": "ICMP Intrusion detected: Large packet"
+        },
+        {
+            "type": "ICMP",
+            "description": "ICMP Echo Request",
+            "condition": "features.get('header_len', 0) == 8 and features.get('payload', 0) == 0",
+            "alert_message": "ICMP Echo Request detected"
+        },
+        {
+            "type": "TCP",
+            "description": "Suspicious TCP flags",
+            "condition": "features.get('chksum') is not None and features.get('chksum') & 0x29 == 0x29",
+            "alert_message": "TCP Intrusion detected: Suspicious flags"
+        },
+        {
+            "type": "UDP",
+            "description": "Large UDP packet",
+            "condition": "features.get('raw', 0) > 5000",
+            "alert_message": "UDP Intrusion detected: Large packet"
+        },
+        {
+            "type": "TCP",
+            "description": "TCP SYN flood attack",
+            "condition": "features.get('raw', 0) > 5000",
+            "alert_message": "TCP SYN flood detected: Large packet size"
+        },
+        {
+            "type": "TCP",
+            "description": "TCP SYN flood attack",
+            "condition": "features.get('ip_proto') == 6 and features.get('header_len', 0) == 20 and features.get('payload', 0) => 10000 and features.get('tcp_flags', 0) & 0x02 == 0x02 and features.get('tcp_window', 0) == 64",
+            "alert_message": "TCP SYN flood detected"
+        }
+    ]
+}
+
